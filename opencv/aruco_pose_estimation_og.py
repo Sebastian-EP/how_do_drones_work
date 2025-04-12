@@ -97,7 +97,12 @@ parameters  = aruco.DetectorParameters_create()
 
 
 #--- Capture the videocamera (this may also be a video or a picture)
-cap = cv2.VideoCapture(0)
+gst_pipeline = (
+    "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=30/1 ! "
+    "nvvidconv ! video/x-raw, format=BGR ! appsink"
+)
+cap = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
+
 #-- Set the camera size as the one it was calibrated with
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
